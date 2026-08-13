@@ -1,8 +1,18 @@
 "use client";
 
-import { Map as MapLibreMap, Marker } from "maplibre-gl";
+import { Map as MapLibreMap, Marker, setWorkerUrl } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
+
+// Turbopack's dev-mode bundling of maplibre-gl's `new Worker(new URL(...,
+// import.meta.url))` resolves to the wrong path (observed colliding with
+// this app's own /map route, returning HTML instead of the worker script).
+// Point at the prebuilt worker bundle we self-host instead: public/maplibre-gl-worker.mjs
+// + public/maplibre-gl-shared.mjs (the worker's own dependency), both copied
+// verbatim from node_modules/maplibre-gl/dist/. Must be re-copied whenever
+// the maplibre-gl version in package.json changes, or the worker can silently
+// go stale relative to the main bundle.
+setWorkerUrl("/maplibre-gl-worker.mjs");
 
 import type { Hotel } from "@/api/hotels";
 import {

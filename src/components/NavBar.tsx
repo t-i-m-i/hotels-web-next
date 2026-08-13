@@ -4,7 +4,6 @@ const LINKS = [
   { href: "/", label: "Explore" },
   { href: "/map", label: "Map" },
   { href: "/my-bookings", label: "My Bookings" },
-  { href: "/search", label: "Search" },
 ];
 
 export default function NavBar() {
