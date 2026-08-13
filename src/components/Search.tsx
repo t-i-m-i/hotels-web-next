@@ -1,13 +1,16 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useRef, useTransition } from "react";
+import { useRef } from "react";
 
-export default function Search() {
+export default function Search({
+  startTransitionAction,
+}: {
+  startTransitionAction: (callback: () => void) => void;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   function handleChange(value: string) {
@@ -17,7 +20,7 @@ export default function Search() {
       if (value) params.set("search", value);
       else params.delete("search");
       // router.replace -> each keystroke shouldn't add a new browser-history entry, or "back" becomes unusable
-      startTransition(() => router.replace(`${pathname}?${params.toString()}`));
+      startTransitionAction(() => router.replace(`${pathname}?${params.toString()}`));
     }, 300);
   }
 
