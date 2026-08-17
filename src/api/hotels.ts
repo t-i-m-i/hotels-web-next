@@ -1,4 +1,4 @@
-// TODO add Zod response validation -> see: hotels-alt-web-start/src/api/hotels/get-hotels.ts
+// TODO consider adding Zod response validation -> see: hotels-alt-web-start/src/api/hotels/get-hotels.ts
 //
 import { apiClient } from "@/api/client";
 import type { components } from "@/api/generated/schema";

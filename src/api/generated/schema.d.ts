@@ -36,6 +36,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bookings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["BookingsController_findAll"];
+        put?: never;
+        post: operations["BookingsController_create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bookings/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["BookingsController_findOne"];
+        put?: never;
+        post?: never;
+        delete: operations["BookingsController_remove"];
+        options?: never;
+        head?: never;
+        patch: operations["BookingsController_update"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -56,6 +88,34 @@ export interface components {
             /** @example Barcelona, Spain */
             location: string;
             geo: components["schemas"]["GeoDto"];
+        };
+        CreateBookingDto: {
+            /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
+            hotelId: string;
+            /** @example 2026-09-01 */
+            checkIn: string;
+            /** @example 2026-09-10 */
+            checkOut: string;
+        };
+        BookingDto: {
+            /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
+            id: string;
+            /** @example bf721a73-1a8b-4de2-b74b-a747e1197d3f */
+            userId: string;
+            /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
+            hotelId: string;
+            /** @example 2026-09-01 */
+            checkIn: string;
+            /** @example 2026-09-10 */
+            checkOut: string;
+        };
+        UpdateBookingDto: {
+            /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
+            hotelId?: string;
+            /** @example 2026-09-01 */
+            checkIn?: string;
+            /** @example 2026-09-10 */
+            checkOut?: string;
         };
     };
     responses: never;
@@ -109,6 +169,107 @@ export interface operations {
             };
             /** @description Hotel with the given id does not exist */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BookingsController_findAll: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BookingsController_create: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateBookingDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingDto"];
+                };
+            };
+        };
+    };
+    BookingsController_findOne: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BookingsController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    BookingsController_update: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateBookingDto"];
+            };
+        };
+        responses: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
