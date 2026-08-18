@@ -14,3 +14,13 @@ export async function submitBooking(body: CreateBookingDto): Promise<Booking> {
   }
   return data;
 }
+
+export async function getBooking(id: string): Promise<Booking> {
+  const { data, error } = await apiClient.GET("/bookings/{id}", {
+    params: { path: { id } },
+  });
+  if (error || !data) {
+    throw error ?? new Error(`Booking ${id} not found`);
+  }
+  return data;
+}

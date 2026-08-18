@@ -5,11 +5,12 @@ import { DateRange } from "@daypicker/react";
 import { useState } from "react";
 import { submitBooking } from "@/api/bookings";
 import { format } from "date-fns";
+import router from "next/router";
 
 export function HotelForm({ hotel }: { hotel: Hotel }) {
   const [range, setRange] = useState<DateRange | undefined>(undefined);
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (range && range.from && range.to) {
       const body = {
@@ -17,7 +18,8 @@ export function HotelForm({ hotel }: { hotel: Hotel }) {
         checkIn: format(range.from, "yyyy-MM-dd"),
         checkOut: format(range.to, "yyyy-MM-dd"),
       }
-      await submitBooking(body);
+      const booking = await submitBooking(body);
+      router.push(`/booking/${booking.id}`);
     }
   };
 

@@ -3,7 +3,8 @@ import Link from "next/link";
 const LINKS = [
   { href: "/", label: "Explore" },
   { href: "/map", label: "Map" },
-  { href: "/my-bookings", label: "My Bookings" },
+  { href: "/hotels", label: "Hotels" },
+  { href: "/bookings", label: "Bookings" },
 ];
 
 export default function NavBar() {
