@@ -109,6 +109,20 @@ export interface components {
             /** @example 2026-09-10 */
             checkOut: string;
         };
+        BookingHotelSummaryDto: {
+            name: string;
+        };
+        BookingUserSummaryDto: {
+            firstName: string;
+            lastName: string;
+        };
+        BookingDetailsDto: {
+            id: string;
+            hotel: components["schemas"]["BookingHotelSummaryDto"];
+            user: components["schemas"]["BookingUserSummaryDto"];
+            checkIn: string;
+            checkOut: string;
+        };
         UpdateBookingDto: {
             /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
             hotelId?: string;
@@ -189,7 +203,9 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["BookingDetailsDto"][];
+                };
             };
         };
     };
@@ -228,6 +244,15 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingDto"];
+                };
+            };
+            /** @description Booking not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
