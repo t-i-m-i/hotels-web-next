@@ -3,8 +3,10 @@ import Link from "next/link";
 const LINKS = [
   { href: "/", label: "Explore" },
   { href: "/map", label: "Map" },
+  { href: "/lm", label: "Last Minute" }, // get free ranges free days <= today + 14
   { href: "/hotels", label: "Hotels" },
   { href: "/bookings", label: "Bookings" },
+  { href: "/user-bookings", label: "Users with bookings" },
 ];
 
 export default function NavBar() {

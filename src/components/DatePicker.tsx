@@ -1,16 +1,17 @@
 "use client";
-import { type DateRange, DayPicker } from "@daypicker/react";
+import { type DateRange, DayPicker, Matcher } from "@daypicker/react";
 import { format } from "date-fns";
 import "@daypicker/react/style.css";
 
 export function DatePicker({
   range,
   onSelectAction,
+  disabled,
 }: {
   range: DateRange | undefined;
   onSelectAction: (range: DateRange | undefined) => void;
+  disabled?: Matcher | Matcher[];
 }) {
-
   let footer = `Please pick the first day.`;
   if (range?.from) {
     if (!range.to) {
@@ -29,6 +30,7 @@ export function DatePicker({
         selected={range}
         onSelect={onSelectAction}
         footer={footer}
+        disabled={disabled}
       />
       <button type="button" onClick={() => onSelectAction(undefined)}>
         Reset

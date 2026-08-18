@@ -16,6 +16,16 @@ export async function submitBooking(body: CreateBookingDto): Promise<Booking> {
   return data;
 }
 
+export async function getCurrentByHotel(hotelId: string) {
+  const { data, error } = await apiClient.GET("/bookings/hotel/{hotelId}", {
+    params: { path: { hotelId } },
+  });
+  if (error || !data) {
+    throw error ?? new Error(`Bookings for hotel with id "${hotelId}" not found`);
+  }
+  return data;
+}
+
 export async function getBooking(id: string): Promise<Booking> {
   const { data, error } = await apiClient.GET("/bookings/{id}", {
     params: { path: { id } },
