@@ -31,6 +31,7 @@ export function DatePicker({
         onSelect={onSelectAction}
         footer={footer}
         disabled={disabled}
+        excludeDisabled
       />
       <button type="button" onClick={() => onSelectAction(undefined)}>
         Reset
