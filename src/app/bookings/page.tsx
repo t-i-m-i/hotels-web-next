@@ -1,11 +1,15 @@
 import { getBookings } from "@/api/bookings";
-import { notFound } from "next/navigation";
 
 export default async function BookingsPage() {
-  const bookings = await getBookings();
-
-  if (!bookings) {
-    notFound();
+  let bookings;
+  try {
+    bookings = await getBookings();
+  } catch {
+    return (
+      <div className="p-4">
+        <p className="text-neutral-600">Couldn&apos;t load bookings.</p>
+      </div>
+    );
   }
 
   return (

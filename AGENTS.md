@@ -71,3 +71,7 @@ refetching that URL-driven navigation can't express.
 - When you finish a non-trivial chunk of work, add a `docs/logs/NNN-*.md`
   entry (what was done, why, anything non-obvious/gotchas) rather than
   editing an old log entry.
+
+## Commit messages
+
+One-line commit messages — no multi-paragraph bodies.
