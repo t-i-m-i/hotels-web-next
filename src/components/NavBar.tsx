@@ -3,10 +3,10 @@ import Link from "next/link";
 const LINKS = [
   { href: "/", label: "Explore" },
   { href: "/map", label: "Map" },
-  { href: "/lm", label: "Last Minute" }, // get free ranges free days <= today + 14
-  { href: "/hotels", label: "Hotels" },
-  { href: "/bookings", label: "Bookings" },
-  { href: "/user-bookings", label: "Users with bookings" },
+  { href: "/my-bookings", label: "My Bookings" },
+  { href: "/hotels", label: "Hotels (admin)" }, // admin - show all hotels
+  { href: "/bookings", label: "Bookings (admin)" }, // admin - show hotels with bookings
+  { href: "/guests", label: "Guests (admin)" }, // admin - show all guests with bookings
 ];
 
 export default function NavBar() {
