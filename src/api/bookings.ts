@@ -43,3 +43,13 @@ export async function getBookings(): Promise<BookingDetailsDto[]> {
   }
   return data;
 }
+
+export async function getBookingsByUser(userId: string): Promise<BookingDetailsDto[]> {
+  const { data, error } = await apiClient.GET("/bookings/user/{userId}", {
+    params: { path: { userId } },
+  });
+  if (error || !data) {
+    throw error ?? new Error(`Bookings for guest ${userId} not found`);
+  }
+  return data;
+}
