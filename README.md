@@ -4,10 +4,12 @@ A web app for browsing hotels and viewing them on a map — the Next.js
 counterpart to the [Hotels](https://github.com/t-i-m-i/hotels) React Native
 app, built to demonstrate the same product as a server-rendered web app.
 
-**What it does:** browse a list of hotels, tap one to see it on the map,
-view all hotels at once on a full map. Search and My Bookings exist as UI
-shells only, matching the current state of the RN app — see "Project
-status" below.
+**What it does:** browse and search a list of hotels, click one to see it
+on the map and book a stay there, view all hotels at once on a full map,
+and see a guest's bookings on "My Bookings". A small set of unauthenticated
+admin-ish routes (`/bookings`, `/hotels`) exist as a query/reporting
+playground on top of the same data, not a customer-facing feature — see
+"Project status" below.
 
 ## Why this project
 
@@ -19,9 +21,11 @@ independently in each client repo from the same committed spec file.
 ## Tech stack
 
 - **Next.js 16 (App Router) + React 19** — Server Components do all data
-  fetching (hotel list, hotel detail, map data), server-to-server against
-  `hotels-api`; client components are used only where the DOM is required
-  (the map).
+  fetching (hotel list, hotel detail, map data, bookings), server-to-server
+  against `hotels-api`; booking submission is a Server Action, called
+  directly from a client component's `onSubmit` rather than
+  `useMutation`/`<form action>`. Client components are used only where the
+  DOM is required (the map, the date-range picker, debounced search).
 - **Tailwind CSS 4** for styling.
 - **maplibre-gl** — the vector-tile map SDK's vanilla web JS build, using
   [OpenFreeMap](https://openfreemap.org/) (free, keyless) tiles — the web
@@ -75,7 +79,29 @@ using the app does require `hotels-api`'s dev server running locally.
 
 ## Project status
 
-Hotel list, hotel detail, and the full map are real, server-rendered pages
-backed by the live `hotels-api`. Search and My Bookings are intentionally
-UI-only stubs — exact parity with the current RN app, not a missing
-feature. See `docs/logs/` for how this was built.
+Real, server-rendered pages backed by the live `hotels-api`:
+
+- **`/`** — hotel list with debounced, URL-driven search (`?search=`).
+- **`/hotel/[hotelId]`** — hotel detail, map, and a booking form (date-range
+  picker that disables already-booked ranges for that hotel).
+- **`/map`** — full map of every hotel.
+- **`/booking/[bookingId]`** — booking confirmation (currently only
+  renders the raw id; not fully built out yet).
+- **`/my-bookings`** — a guest's bookings, with past ones visually dimmed.
+  `userId` is hardcoded (no auth in this app yet).
+- **`/bookings`** — admin-ish "every booking with hotel + guest names" list,
+  a reporting/SQL-practice route, not part of the customer-facing product.
+
+Deliberately not built out yet:
+
+- **`/hotels`** — empty stub, meant for a future admin "all hotels" view.
+- **`/guests`** — linked from `NavBar` but has no route behind it yet
+  (404s today).
+- No auth anywhere — every "current user" is a hardcoded id.
+
+This app intentionally diverges from strict RN-app parity for the
+admin-ish routes (see `docs/logs/003-booking-flow.md`) — they exist to
+practice SQL/reporting queries on top of the same data, not to mirror the
+RN app's screens. See `docs/logs/` for the full build history and
+`docs/logs/004-my-bookings-and-timezone-caveat.md` for a known timezone
+approximation in the "past booking" dimming logic.
