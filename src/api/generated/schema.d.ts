@@ -100,6 +100,22 @@ export interface paths {
         patch: operations["BookingsController_update"];
         trace?: never;
     };
+    "/bookings/synthetic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["BookingsController_removeSynthetic"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -162,6 +178,13 @@ export interface components {
             checkIn?: string;
             /** @example 2026-09-10 */
             checkOut?: string;
+        };
+        DeleteSyntheticBookingsDto: {
+            /**
+             * @description Number of synthetic bookings deleted
+             * @example 3
+             */
+            deletedCount: number;
         };
     };
     responses: never;
@@ -244,7 +267,10 @@ export interface operations {
     BookingsController_create: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Set to "true" to tag this booking as test data created by an automated e2e suite, rather than a real reservation. Synthetic bookings are excluded from nothing at read time — they behave like any other booking — but can be bulk-deleted via DELETE /bookings/synthetic. */
+                "x-synthetic-booking"?: string;
+            };
             path?: never;
             cookie?: never;
         };
@@ -345,7 +371,14 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            200: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Booking not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -373,6 +406,25 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    BookingsController_removeSynthetic: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteSyntheticBookingsDto"];
+                };
             };
         };
     };

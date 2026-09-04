@@ -36,7 +36,12 @@ export default defineConfig({
   webServer: {
     command: "bun run dev",
     url: "http://localhost:3001",
+    // Only takes effect on a server Playwright itself starts. If a dev
+    // server from a plain `bun run dev` is already up on :3001, this
+    // config reuses it as-is (unset E2E_TEST_MODE, no synthetic tag) —
+    // stop it first if you need the tag applied.
     reuseExistingServer: !process.env.CI,
     timeout: 60_000,
+    env: { E2E_TEST_MODE: "true" },
   },
 });

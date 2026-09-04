@@ -8,8 +8,8 @@ hotel, pick a date range, reserve, land on the confirmation screen. A
 "can a user actually book a hotel" journey belongs at the frontend layer
 — it's UI navigation and interaction, not something the backend can
 meaningfully assert on its own (see `hotels-api`'s
-`docs/logs/006-...-and-dto-validation-e2e.md` for the corresponding
-backend-side call: contract tests there, not journeys). This adds the
+`docs/logs/006-dto-validation-e2e-and-broken-e2e-suite.md` for the
+corresponding backend-side call: contract tests there, not journeys). This adds the
 same journey here, adapted to browser interactions.
 
 ## What was added
