@@ -105,3 +105,22 @@ practice SQL/reporting queries on top of the same data, not to mirror the
 RN app's screens. See `docs/logs/` for the full build history and
 `docs/logs/004-my-bookings-and-timezone-caveat.md` for a known timezone
 approximation in the "past booking" dimming logic.
+
+## Testing
+
+| Command | What it does |
+|---|---|
+| `bun run test:e2e` | Playwright happy-path e2e (`e2e/booking-flow.spec.ts`): search, open a hotel, book a date range, land on the confirmation page. |
+
+`test:e2e` starts this app's own dev server on `:3001` (`playwright.config.ts`'s `webServer`) but requires
+`hotels-api` already running separately on `:3000` with the demo seed data — same requirement as running
+the app manually.
+
+The flow creates a real booking against the shared Neon database. It's cleaned up two ways: precisely, by
+`afterEach` deleting the exact id captured from the post-booking redirect URL; and as a fallback, by
+tagging the booking `X-Synthetic-Booking: true` (only when Playwright itself started the server —
+`E2E_TEST_MODE` in `webServer.env` — never for a plain `bun dev`), so `hotels-api`'s
+`DELETE /bookings/synthetic` can sweep it up even if a run crashes before `afterEach` runs. See
+`docs/logs/005-playwright-booking-e2e.md` and `docs/logs/006-synthetic-booking-tag.md`, and
+`hotels-api`'s `docs/guides/testing-against-production-patterns.md` for the reasoning behind tagging
+synthetic data instead of matching on hotel name/dates.
