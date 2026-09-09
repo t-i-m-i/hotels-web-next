@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 
-import { getHotels } from "@/api/hotels";
+import { getHotel, getHotels } from "@/api/hotels";
 import { getCurrentByHotel } from "@/api/bookings";
+import { isUuid } from "@/utils/validation";
 
 import HotelMap from "@/components/HotelMap";
 import { HotelForm } from "@/components/HotelForm";
@@ -13,12 +14,23 @@ export default async function HotelPage({
 }) {
   const { hotelId } = await params;
 
-  const [hotels, bookings] = await Promise.all([
-    getHotels(),
-    getCurrentByHotel(hotelId),
+  if (!isUuid(hotelId)) {
+    notFound();
+  }
+
+  const [hotel, bookings] = await Promise.all([
+    // getHotels(), // api contract changed - now it responds with paginated hotels.
+    /** 
+     * catch 404 to display notFound, rethrow other errors to be handled by the error boundary
+     * */
+    getHotel(hotelId).catch((e) => {
+      if (e?.statusCode === 404) return null;
+      throw e;
+    }),
+    getCurrentByHotel(hotelId), // returns [] for no current bookings for correct hotel id
   ]);
 
-  const hotel = hotels.find((h) => h.id === hotelId);
+  // const hotel = hotels.data.find((h) => h.id === hotelId);
 
   if (!hotel) {
     notFound();
@@ -30,7 +42,7 @@ export default async function HotelPage({
         <div className="absolute w-1/4 left-4 top-4 z-10 p-4 bg-background rounded-lg">
           <HotelForm hotel={hotel} bookings={bookings} />
         </div>
-        <HotelMap hotels={hotels} selectedHotelId={hotelId} />
+        <HotelMap hotels={[hotel]} selectedHotelId={hotelId} />
       </div>
     </div>
   );

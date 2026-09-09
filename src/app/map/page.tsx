@@ -6,7 +6,7 @@ export default async function MapPage() {
 
   return (
     <div className="h-[calc(100vh-3.25rem)] w-full">
-      <HotelMap hotels={hotels} />
+      <HotelMap hotels={hotels.data} />
     </div>
   );
 }

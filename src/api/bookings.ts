@@ -23,6 +23,7 @@ export async function getCurrentByHotel(hotelId: string) {
   if (error || !data) {
     throw error ?? new Error(`Bookings for hotel with id "${hotelId}" not found`);
   }
+  console.log("getCurrentByHotel", data);
   return data;
 }
 

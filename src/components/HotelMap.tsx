@@ -14,7 +14,7 @@ import { useEffect, useRef } from "react";
 // go stale relative to the main bundle.
 setWorkerUrl("/maplibre-gl-worker.mjs");
 
-import type { Hotel } from "@/api/hotels";
+import type { Hotel, PaginatedHotels } from "@/api/hotels";
 import {
   DEFAULT_MARKER_COLOR,
   MAP_STYLE_URL,

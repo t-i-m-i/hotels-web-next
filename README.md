@@ -67,6 +67,7 @@ colliding with it.
 | `bun run build`                   | Production build.                                                                                                                   |
 | `bun start`                       | Run the production build on port 3001.                                                                                              |
 | `bun run generate:api-types`      | Regenerate `src/api/generated/schema.d.ts` from `../hotels-api/docs/openapi.json` — run after any route/DTO change in `hotels-api`. |
+| `bun run type-check`              | tsc --noEmit                                                                                                                             |
 | `bun run lint`                    | ESLint.                                                                                                                             |
 | `bun run format` / `format:check` | Prettier.                                                                                                                           |
 

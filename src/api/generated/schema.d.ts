@@ -126,6 +126,25 @@ export interface components {
             /** @example 2.1734 */
             longitude: number;
         };
+        HotelImageDto: {
+            /**
+             * @description Storage key, relative to the configured storage/CDN base URL. The client resolves it as `${STORAGE_URL}/${path}`.
+             * @example hotels/shared/01.jpg
+             */
+            path: string;
+            /** @example Hotel Barcino Central — photo 1 */
+            alt: string;
+            /**
+             * @description Intrinsic width in pixels.
+             * @example 1600
+             */
+            width: number;
+            /**
+             * @description Intrinsic height in pixels.
+             * @example 1067
+             */
+            height: number;
+        };
         HotelDto: {
             /** @example 1 */
             id: string;
@@ -136,6 +155,25 @@ export interface components {
             /** @example Barcelona, Spain */
             location: string;
             geo: components["schemas"]["GeoDto"];
+            /** @description Gallery images for the hotel, in display order. First entry is the cover. */
+            images: components["schemas"]["HotelImageDto"][];
+        };
+        PaginationDto: {
+            /** @example 1 */
+            page: number;
+            /** @example 20 */
+            pageSize: number;
+            /** @example 5 */
+            pageCount: number;
+            /** @example 87 */
+            total: number;
+        };
+        HotelsMetaDto: {
+            pagination: components["schemas"]["PaginationDto"];
+        };
+        PaginatedHotelsDto: {
+            data: components["schemas"]["HotelDto"][];
+            meta: components["schemas"]["HotelsMetaDto"];
         };
         CreateBookingDto: {
             /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
@@ -200,6 +238,10 @@ export interface operations {
             query?: {
                 /** @description Case-insensitive filter matched against name and location */
                 search?: string;
+                /** @description Page number */
+                page?: number;
+                /** @description Page size */
+                pageSize?: number;
             };
             header?: never;
             path?: never;
@@ -212,7 +254,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["HotelDto"][];
+                    "application/json": components["schemas"]["PaginatedHotelsDto"];
                 };
             };
         };
