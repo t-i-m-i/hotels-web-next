@@ -22,6 +22,5 @@ export async function getHotel(id: string): Promise<Hotel> {
   if (error || !data) {
     throw error ?? new Error(`Hotel with id "${id}" not found`);
   }
-  console.log("getHotel: ", data);
   return data;
 }
