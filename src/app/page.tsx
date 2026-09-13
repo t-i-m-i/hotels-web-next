@@ -1,15 +1,14 @@
 import Link from "next/link";
 
-import { getHotels, PaginatedHotels } from "@/api/hotels";
-import HotelCard from "@/components/HotelCard";
+import { getHotels } from "@/api/hotels";
 import HotelSearchSection from "@/components/HotelSearchSection";
-import { notFound } from "next/navigation";
+import HotelList from "@/components/HotelList";
 
 export default async function ExplorePage({ searchParams }: PageProps<"/">) {
   const { search } = await searchParams; // search: string | string[] | undefined
   const normalizedSearch = Array.isArray(search) ? search[0] : search;
 
-  const hotels = await getHotels(normalizedSearch);
+  const initialData = await getHotels(normalizedSearch); // page 1, SSR
 
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -19,15 +18,15 @@ export default async function ExplorePage({ searchParams }: PageProps<"/">) {
 
       {/* Pull the list into its own small client wrapper. This is the standard shape for "Server Component data, Client Component pending-state UI": lift the transition to the nearest client component that's a common ancestor of the trigger (input) and the thing you want to visually affect (list). */}
       <HotelSearchSection>
-        {hotels.data.length === 0 ? (
-          <p className="text-neutral-600">No hotels found.</p>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {hotels.data.map((hotel) => (
-              <HotelCard key={hotel.id} hotel={hotel} />
-            ))}
-          </div>
-        )}
+        {/* key: when the search term changes the URL, the Server Component
+            re-renders with a fresh page-1 `initialData`. Keying on the term
+            forces HotelList to remount so its accumulated pages reset instead
+            of appending onto stale results. */}
+        <HotelList
+          key={normalizedSearch ?? ""}
+          initialData={initialData}
+          search={normalizedSearch}
+        />
       </HotelSearchSection>
     </div>
   );

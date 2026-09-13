@@ -20,6 +20,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/hotels/within-bounds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["HotelsController_findWithinBounds"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/hotels/{id}": {
         parameters: {
             query?: never;
@@ -259,6 +275,36 @@ export interface operations {
             };
         };
     };
+    HotelsController_findWithinBounds: {
+        parameters: {
+            query: {
+                /** @description South-west corner latitude */
+                swLat: number;
+                /** @description South-west corner longitude */
+                swLng: number;
+                /** @description North-east corner latitude */
+                neLat: number;
+                /** @description North-east corner longitude */
+                neLng: number;
+                /** @description Case-insensitive filter matched against name and location */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HotelDto"][];
+                };
+            };
+        };
+    };
     HotelsController_findOne: {
         parameters: {
             query?: never;
@@ -277,6 +323,13 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HotelDto"];
                 };
+            };
+            /** @description id is not a valid UUID */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Hotel with the given id does not exist */
             404: {
@@ -350,6 +403,13 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["BookingDto"][];
                 };
+            };
+            /** @description id is not a valid UUID */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

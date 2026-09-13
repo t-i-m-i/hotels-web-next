@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 
-import { getHotel, getHotels } from "@/api/hotels";
+import { getHotel, getHotelsInBounds } from "@/api/hotels";
 import { getCurrentByHotel } from "@/api/bookings";
 import { isUuid } from "@/utils/validation";
 
 import HotelMap from "@/components/HotelMap";
 import { HotelForm } from "@/components/HotelForm";
+import { bboxAround } from "@/utils/geo";
+import { loadHotelsInBounds } from "@/app/actions";
 
 export default async function HotelPage({
   params,
@@ -18,31 +20,30 @@ export default async function HotelPage({
     notFound();
   }
 
-  const [hotel, bookings] = await Promise.all([
-    // getHotels(), // api contract changed - now it responds with paginated hotels.
-    /** 
-     * catch 404 to display notFound, rethrow other errors to be handled by the error boundary
-     * */
-    getHotel(hotelId).catch((e) => {
-      if (e?.statusCode === 404) return null;
-      throw e;
-    }),
+  const hotel = await getHotel(hotelId).catch(() => null);
+  if (!hotel) notFound();
+
+  const [nearby, bookings] = await Promise.all([
+    getHotelsInBounds(bboxAround(hotel.geo, 25 /* km */)),
     getCurrentByHotel(hotelId), // returns [] for no current bookings for correct hotel id
   ]);
 
-  // const hotel = hotels.data.find((h) => h.id === hotelId);
-
-  if (!hotel) {
-    notFound();
-  }
+  // Guarantee the selected hotel is present even if the cap/bbox dropped it.
+  const initialHotels = nearby.some((h) => h.id === hotel.id)
+    ? nearby
+    : [hotel, ...nearby];
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="h-[calc(100vh-3rem)] w-full relative">
-        <div className="absolute w-1/4 left-4 top-4 z-10 p-4 bg-background rounded-lg">
+      <div className="relative h-[calc(100vh-3rem)] w-full">
+        <div className="absolute left-4 top-4 z-10 w-1/4 rounded-lg bg-background p-4">
           <HotelForm hotel={hotel} bookings={bookings} />
         </div>
-        <HotelMap hotels={[hotel]} selectedHotelId={hotelId} />
+        <HotelMap
+          initialHotels={initialHotels}
+          loadHotelsInBoundsAction={loadHotelsInBounds}
+          selectedHotelId={hotelId}
+        />
       </div>
     </div>
   );

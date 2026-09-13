@@ -1,4 +1,3 @@
-"use server"
 import { apiClient } from "@/api/client";
 import type { components } from "@/api/generated/schema";
 
@@ -6,7 +5,7 @@ export type Booking = components["schemas"]["BookingDto"];
 export type CreateBookingDto = components["schemas"]["CreateBookingDto"];
 export type BookingDetailsDto = components["schemas"]["BookingDetailsDto"];
 
-export async function submitBooking(body: CreateBookingDto): Promise<Booking> {
+export async function createBooking(body: CreateBookingDto): Promise<Booking> {
   const { data, error } = await apiClient.POST("/bookings", {
     body,
   });
@@ -21,7 +20,9 @@ export async function getCurrentByHotel(hotelId: string) {
     params: { path: { hotelId } },
   });
   if (error || !data) {
-    throw error ?? new Error(`Bookings for hotel with id "${hotelId}" not found`);
+    throw (
+      error ?? new Error(`Bookings for hotel with id "${hotelId}" not found`)
+    );
   }
   return data;
 }
@@ -44,7 +45,9 @@ export async function getBookings(): Promise<BookingDetailsDto[]> {
   return data;
 }
 
-export async function getBookingsByUser(userId: string): Promise<BookingDetailsDto[]> {
+export async function getBookingsByUser(
+  userId: string,
+): Promise<BookingDetailsDto[]> {
   const { data, error } = await apiClient.GET("/bookings/user/{userId}", {
     params: { path: { userId } },
   });
