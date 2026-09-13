@@ -286,8 +286,6 @@ export interface operations {
                 neLat: number;
                 /** @description North-east corner longitude */
                 neLng: number;
-                /** @description Case-insensitive filter matched against name and location */
-                search?: string;
             };
             header?: never;
             path?: never;

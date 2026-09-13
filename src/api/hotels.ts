@@ -30,13 +30,10 @@ export async function getHotel(id: string): Promise<Hotel> {
   return data;
 }
 
-export async function getHotelsInBounds(
-  bounds: Bounds,
-  search?: string,
-): Promise<Hotel[]> {
+export async function getHotelsInBounds(bounds: Bounds): Promise<Hotel[]> {
   const [swLng, swLat, neLng, neLat] = bounds;
   const { data, error } = await apiClient.GET("/hotels/within-bounds", {
-    params: { query: { swLat, swLng, neLat, neLng, search } },
+    params: { query: { swLat, swLng, neLat, neLng } },
   });
   if (error || !data) {
     throw error ?? new Error("Failed to load hotels in bounds");

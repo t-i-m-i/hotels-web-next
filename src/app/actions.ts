@@ -51,9 +51,6 @@ export async function loadMoreHotels(
   return getHotels(search, page);
 }
 
-export async function loadHotelsInBounds(
-  bounds: Bounds,
-  search?: string,
-): Promise<Hotel[]> {
-  return getHotelsInBounds(bounds, search);
+export async function loadHotelsInBounds(bounds: Bounds): Promise<Hotel[]> {
+  return getHotelsInBounds(bounds);
 }

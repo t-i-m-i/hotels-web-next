@@ -29,15 +29,10 @@ export default function HotelMap({
   initialHotels,
   loadHotelsInBoundsAction,
   selectedHotelId,
-  search,
 }: {
   initialHotels: Hotel[];
-  loadHotelsInBoundsAction: (
-    bounds: Bounds,
-    search?: string,
-  ) => Promise<Hotel[]>;
+  loadHotelsInBoundsAction: (bounds: Bounds) => Promise<Hotel[]>;
   selectedHotelId?: string;
-  search?: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -70,16 +65,13 @@ export default function HotelMap({
       const [[west, south], [east, north]] = map.getBounds().toArray();
       const myId = ++reqIdRef.current;
       try {
-        const next = await loadHotelsInBoundsAction(
-          [west, south, east, north],
-          search,
-        );
+        const next = await loadHotelsInBoundsAction([west, south, east, north]);
         if (myId === reqIdRef.current) setHotels(next);
       } catch {
         /* keep the pins we have */
       }
     }, 350);
-  }, [loadHotelsInBoundsAction, search]);
+  }, [loadHotelsInBoundsAction]);
 
   // create map once
   useEffect(() => {
@@ -102,7 +94,7 @@ export default function HotelMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps -- map created once
   }, []);
 
-  // keep the moveend handler's closure current if `search` changes
+  // keep the moveend handler's closure current if `refetchForViewport` changes
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
