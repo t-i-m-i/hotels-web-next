@@ -4,7 +4,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 
 export default function Search({
-  startTransitionAction,
+  startTransitionAction ,
 }: {
   startTransitionAction: (callback: () => void) => void;
 }) {
