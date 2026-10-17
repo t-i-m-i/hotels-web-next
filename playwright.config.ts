@@ -26,7 +26,11 @@ export default defineConfig({
         // leave the page on a Next.js dev error overlay. Force software
         // rendering so the map actually mounts.
         launchOptions: {
-          args: ["--use-gl=swiftshader", "--enable-webgl", "--ignore-gpu-blacklist"],
+          args: [
+            "--use-gl=swiftshader",
+            "--enable-webgl",
+            "--ignore-gpu-blacklist",
+          ],
         },
       },
     },

@@ -54,6 +54,8 @@ test.describe("books a hotel end to end", () => {
     await expect(page).toHaveURL(/\/booking\/([0-9a-f-]+)$/);
     createdBookingId = new URL(page.url()).pathname.split("/").pop();
 
-    await expect(page.getByRole("heading", { name: "Booking Details" })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Booking Details" }),
+    ).toBeVisible();
   });
 });

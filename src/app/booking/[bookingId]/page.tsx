@@ -1,7 +1,9 @@
 import { getBooking } from "@/api/bookings";
 import { notFound } from "next/navigation";
 
-export default async function BookingPage(props: PageProps<"/booking/[bookingId]">) {
+export default async function BookingPage(
+  props: PageProps<"/booking/[bookingId]">,
+) {
   const { bookingId } = await props.params;
   const booking = await getBooking(bookingId);
 

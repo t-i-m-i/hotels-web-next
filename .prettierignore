@@ -1,3 +1,5 @@
 node_modules
 .next
 src/api/generated
+public
+docs/logs

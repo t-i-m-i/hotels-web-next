@@ -4,7 +4,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 
 export default function Search({
-  startTransitionAction ,
+  startTransitionAction,
 }: {
   startTransitionAction: (callback: () => void) => void;
 }) {
@@ -20,7 +20,9 @@ export default function Search({
       if (value) params.set("search", value);
       else params.delete("search");
       // router.replace -> each keystroke shouldn't add a new browser-history entry, or "back" becomes unusable
-      startTransitionAction(() => router.replace(`${pathname}?${params.toString()}`));
+      startTransitionAction(() =>
+        router.replace(`${pathname}?${params.toString()}`),
+      );
     }, 300);
   }
 

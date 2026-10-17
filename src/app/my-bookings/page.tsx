@@ -1,8 +1,11 @@
 import { getBookingsByUser } from "@/api/bookings";
 import BookingListItem from "@/components/BookingListItem";
+import { requireSessionUser } from "@/lib/getSession";
 
 export default async function MyBookingsPage() {
-  const userId = "bf721a73-1a8b-4de2-b74b-a747e1197d3f";
+  // const userId = "bf721a73-1a8b-4de2-b74b-a747e1197d3f";
+  const { id: userId } = await requireSessionUser("/my-bookings");
+
   let bookings;
 
   try {

@@ -67,7 +67,7 @@ colliding with it.
 | `bun run build`                   | Production build.                                                                                                                   |
 | `bun start`                       | Run the production build on port 3001.                                                                                              |
 | `bun run generate:api-types`      | Regenerate `src/api/generated/schema.d.ts` from `../hotels-api/docs/openapi.json` — run after any route/DTO change in `hotels-api`. |
-| `bun run type-check`              | tsc --noEmit                                                                                                                             |
+| `bun run type-check`              | tsc --noEmit                                                                                                                        |
 | `bun run lint`                    | ESLint.                                                                                                                             |
 | `bun run format` / `format:check` | Prettier.                                                                                                                           |
 
@@ -109,8 +109,8 @@ approximation in the "past booking" dimming logic.
 
 ## Testing
 
-| Command | What it does |
-|---|---|
+| Command            | What it does                                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
 | `bun run test:e2e` | Playwright happy-path e2e (`e2e/booking-flow.spec.ts`): search, open a hotel, book a date range, land on the confirmation page. |
 
 `test:e2e` starts this app's own dev server on `:3001` (`playwright.config.ts`'s `webServer`) but requires

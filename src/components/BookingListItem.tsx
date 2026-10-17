@@ -22,7 +22,11 @@ function isPastBooking(checkOut: string): boolean {
   return checkOut < today;
 }
 
-export default function BookingListItem({ booking }: { booking: BookingDetailsDto }) {
+export default function BookingListItem({
+  booking,
+}: {
+  booking: BookingDetailsDto;
+}) {
   const isPast = isPastBooking(booking.checkOut);
 
   return (

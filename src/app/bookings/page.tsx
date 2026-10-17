@@ -21,7 +21,9 @@ export default async function BookingsPage() {
           <p>Hotel: {booking.hotel.name}</p>
           <p>Check in: {booking.checkIn}</p>
           <p>Check out: {booking.checkOut}</p>
-          <p>Guest: {booking.user.firstName} {booking.user.lastName}</p>
+          <p>
+            Guest: {booking.user.firstName} {booking.user.lastName}
+          </p>
         </div>
       ))}
     </div>
