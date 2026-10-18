@@ -2,59 +2,46 @@
 
 import { useState } from "react";
 import { authClient } from "@/api/authClient";
-import { type LoginForm, loginSchema } from "@/schemas/auth";
+import { type RegisterForm, registerSchema } from "@/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { GithubButton } from "@/components/auth/GithubButton";
+import { buttonClass, inputClass } from "./styles";
 
-export function LoginFormView({ redirectTo }: { redirectTo: string }) {
+export function RegisterFormView({ redirectTo }: { redirectTo: string }) {
   const router = useRouter();
   const [serverError, setServerError] = useState<string>("");
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+  } = useForm<RegisterForm>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { name: "", email: "", password: "" },
   });
 
-  const onLogin: SubmitHandler<LoginForm> = async ({ email, password }) => {
+  const onRegister: SubmitHandler<RegisterForm> = async ({
+    name,
+    email,
+    password,
+  }) => {
     setServerError("");
-    const { error } = await authClient.signIn.email({ email, password });
+    const { error } = await authClient.signUp.email({ name, email, password });
     if (error) {
-      setServerError(error.message ?? "Login failed.");
+      setServerError(error.message ?? "Register failed.");
       return;
     }
     router.replace(redirectTo);
     router.refresh();
   };
 
-  const handleLoginGithub = async () => {
-    setServerError("");
-    const { error } = await authClient.signIn.social({
-      provider: "github",
-      // Must be absolute: a relative URL resolves against the API host, not
-      // this app. Safe to read window here — this only runs on click.
-      callbackURL: `${window.location.origin}${redirectTo}`,
-      errorCallbackURL: `${window.location.origin}/login`,
-    });
-    if (error) {
-      setServerError(error.message ?? "Login failed.");
-      return;
-    }
-  };
-
-  const inputClass =
-    "w-full rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 dark:border-neutral-700";
-  const buttonClass =
-    "w-full rounded-md px-3 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50";
-
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-4 p-4 pt-12">
-      <h1 className="text-xl font-semibold">Login</h1>
+      <h1 className="text-xl font-semibold">Register</h1>
       <form
-        onSubmit={handleSubmit(onLogin)}
+        onSubmit={handleSubmit(onRegister)}
         className="flex flex-col gap-4"
         noValidate
       >
@@ -63,6 +50,21 @@ export function LoginFormView({ redirectTo }: { redirectTo: string }) {
             {serverError}
           </p>
         )}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="name" className="text-sm font-medium">
+            Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            autoComplete="name"
+            className={inputClass}
+            {...register("name")}
+          />
+          {errors.name && (
+            <p className="text-sm text-red-600">{errors.name.message}</p>
+          )}
+        </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="email" className="text-sm font-medium">
             Email
@@ -85,7 +87,7 @@ export function LoginFormView({ redirectTo }: { redirectTo: string }) {
           <input
             id="password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
             className={inputClass}
             {...register("password")}
           />
@@ -98,7 +100,7 @@ export function LoginFormView({ redirectTo }: { redirectTo: string }) {
           disabled={isSubmitting}
           className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700`}
         >
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? "Signing up..." : "Register"}
         </button>
       </form>
       <div className="flex items-center gap-3 text-xs text-neutral-500">
@@ -106,14 +108,20 @@ export function LoginFormView({ redirectTo }: { redirectTo: string }) {
         or
         <span className="h-px flex-1 bg-neutral-300 dark:bg-neutral-700" />
       </div>
-      <button
-        type="button"
-        onClick={handleLoginGithub}
+      <GithubButton
+        redirectTo={redirectTo}
         disabled={isSubmitting}
-        className={`${buttonClass} border border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900`}
-      >
-        Continue with GitHub
-      </button>
+        onError={setServerError}
+      />
+      <p className="text-center text-sm text-neutral-500">
+        Already have an account?{" "}
+        <Link
+          href={`/login?redirectTo=${encodeURIComponent(redirectTo)}`}
+          className="font-medium text-blue-600 hover:underline"
+        >
+          Login
+        </Link>
+      </p>
     </div>
   );
 }

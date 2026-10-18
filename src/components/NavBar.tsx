@@ -3,10 +3,8 @@ import Link from "next/link";
 const LINKS = [
   { href: "/", label: "Explore" },
   { href: "/map", label: "Map" },
-  { href: "/my-bookings", label: "My Bookings" },
-  { href: "/hotels", label: "Hotels (admin)" }, // admin - show all hotels
-  { href: "/bookings", label: "Bookings (admin)" }, // admin - show hotels with bookings
-  { href: "/guests", label: "Guests (admin)" }, // admin - show all guests with bookings
+  { href: "/bookings", label: "Bookings" },
+  { href: "/account", label: "Account" },
 ];
 
 export default function NavBar() {

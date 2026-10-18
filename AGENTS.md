@@ -44,30 +44,15 @@ ancestor and pass it down as a prop (see `HotelMap`, which receives
 client-side fetching hook unless a page genuinely needs client-triggered
 refetching that URL-driven navigation can't express.
 
-## Structure
-
-- `src/app/` — Next.js App Router pages: `page.tsx` (hotel list, "/"),
-  `map/page.tsx`, `my-bookings/page.tsx` (stub), `search/page.tsx` (stub,
-  intentionally non-functional — matches the RN app), `hotel/[hotelId]/page.tsx`.
-- `src/api/` — `client.ts` (typed `openapi-fetch` client), `hotels.ts`
-  (`Hotel` type + wrapper functions), `generated/schema.d.ts`
-  (`openapi-typescript` output — **do not hand-edit**; regenerate with
-  `bun run generate:api-types`, which reads `../hotels-api/docs/openapi.json`
-  — requires `hotels-api` checked out as a sibling directory, but not
-  running, for codegen).
-- `src/components/` — `HotelMap.tsx` (`'use client'`, prop-driven: `hotels`,
-  `selectedHotelId`), `NavBar.tsx`, `HotelCard.tsx`.
-- `src/constants/`, `src/utils/` — map config, geo helpers (ported from the
-  RN app's equivalents).
-- `docs/` — reference docs (current-state, edited in place) plus
-  `docs/logs/` (append-only, dated work-session notes — never edit old
-  entries, correct in a new one instead). See `docs/README.md`.
-
 ## Conventions
 
-- Keep the RN app and this app's search/my-bookings stub state in sync
-  unless a change is deliberately made to both — don't get ahead of the RN
-  app's functionality without discussing it first.
+- Keep the RN app and this app's search stub state in sync unless a change
+  is deliberately made to both — don't get ahead of the RN app's
+  functionality without discussing it first.
+- `src/api/generated/schema.d.ts` is `openapi-typescript` output — **do not
+  hand-edit**; regenerate with `bun run generate:api-types` (reads
+  `../hotels-api/docs/openapi.json`, so `hotels-api` must be checked out as
+  a sibling directory, but needn't be running).
 - When you finish a non-trivial chunk of work, add a `docs/logs/NNN-*.md`
   entry (what was done, why, anything non-obvious/gotchas) rather than
   editing an old log entry.

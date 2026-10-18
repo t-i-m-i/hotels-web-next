@@ -1,4 +1,4 @@
-import { LoginFormView } from "@/components/LoginFormView";
+import { LoginFormView } from "@/components/auth/LoginFormView";
 import { redirectToSchema } from "@/schemas/auth";
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {

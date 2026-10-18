@@ -37,14 +37,6 @@ export async function getBooking(id: string): Promise<Booking> {
   return data;
 }
 
-export async function getBookings(): Promise<BookingDetailsDto[]> {
-  const { data, error } = await apiClient.GET("/bookings");
-  if (error || !data) {
-    throw error ?? new Error(`Failed to load bookings`);
-  }
-  return data;
-}
-
 export async function getBookingsByUser(
   userId: string,
 ): Promise<BookingDetailsDto[]> {

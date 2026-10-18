@@ -1,9 +1,14 @@
-import { getBookings } from "@/api/bookings";
+import { getBookingsByUser } from "@/api/bookings";
+import BookingListItem from "@/components/BookingListItem";
+import { requireSessionUser } from "@/lib/getSession";
 
 export default async function BookingsPage() {
+  const { id: userId } = await requireSessionUser("/bookings");
+
   let bookings;
+
   try {
-    bookings = await getBookings();
+    bookings = await getBookingsByUser(userId);
   } catch {
     return (
       <div className="p-4">
@@ -13,19 +18,17 @@ export default async function BookingsPage() {
   }
 
   return (
-    <div>
-      <h1>Bookings</h1>
-      {bookings.map((booking) => (
-        <div key={booking.id}>
-          <p>Booking no: {booking.id}</p>
-          <p>Hotel: {booking.hotel.name}</p>
-          <p>Check in: {booking.checkIn}</p>
-          <p>Check out: {booking.checkOut}</p>
-          <p>
-            Guest: {booking.user.firstName} {booking.user.lastName}
-          </p>
+    <div className="flex flex-col gap-4 p-4">
+      <h1 className="text-xl font-semibold">My Bookings</h1>
+      {bookings.length === 0 ? (
+        <p className="text-neutral-600">No bookings found.</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {bookings.map((booking) => (
+            <BookingListItem key={booking.id} booking={booking} />
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }
