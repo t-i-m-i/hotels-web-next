@@ -1,34 +1,14 @@
-import { getBookingsByUser } from "@/api/bookings";
-import BookingListItem from "@/components/BookingListItem";
-import { requireSessionUser } from "@/lib/getSession";
+import { GuestBookings } from "@/components/guest/GuestBookings";
+import { HostBookings } from "@/components/host/HostBookings";
+import { getActiveRole, requireSessionUser } from "@/lib/getSession";
 
 export default async function BookingsPage() {
-  const { id: userId } = await requireSessionUser("/bookings");
+  const user = await requireSessionUser("/bookings");
+  const activeRole = await getActiveRole(user);
 
-  let bookings;
-
-  try {
-    bookings = await getBookingsByUser(userId);
-  } catch {
-    return (
-      <div className="p-4">
-        <p className="text-neutral-600">Couldn&apos;t load bookings.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-xl font-semibold">My Bookings</h1>
-      {bookings.length === 0 ? (
-        <p className="text-neutral-600">No bookings found.</p>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {bookings.map((booking) => (
-            <BookingListItem key={booking.id} booking={booking} />
-          ))}
-        </div>
-      )}
-    </div>
+  return activeRole === "host" ? (
+    <HostBookings userId={user.id} />
+  ) : (
+    <GuestBookings userId={user.id} />
   );
 }

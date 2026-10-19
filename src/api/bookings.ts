@@ -4,6 +4,11 @@ import type { components } from "@/api/generated/schema";
 export type Booking = components["schemas"]["BookingDto"];
 export type CreateBookingDto = components["schemas"]["CreateBookingDto"];
 export type BookingDetailsDto = components["schemas"]["BookingDetailsDto"];
+export type HostHotelBookingsDto =
+  components["schemas"]["HostHotelBookingsDto"];
+export type HostBookingDto = components["schemas"]["HostBookingDto"];
+export type UpdateBookingStatusDto =
+  components["schemas"]["UpdateBookingStatusDto"];
 
 export async function createBooking(body: CreateBookingDto): Promise<Booking> {
   const { data, error } = await apiClient.POST("/bookings", {
@@ -45,6 +50,16 @@ export async function getBookingsByUser(
   });
   if (error || !data) {
     throw error ?? new Error(`Bookings for guest ${userId} not found`);
+  }
+  return data;
+}
+
+export async function getByHost(hostId: string) {
+  const { data, error } = await apiClient.GET("/bookings/host/{hostId}", {
+    params: { path: { hostId } },
+  });
+  if (error || !data) {
+    throw error ?? new Error(`Bookings for host ${hostId} not found`);
   }
   return data;
 }
