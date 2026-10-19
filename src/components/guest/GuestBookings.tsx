@@ -1,5 +1,5 @@
 import { getBookingsByUser } from "@/api/bookings";
-import BookingListItem from "../BookingListItem";
+import BookingListItem from "@/components/BookingListItem";
 
 export async function GuestBookings({ userId }: { userId: string }) {
   let bookings;

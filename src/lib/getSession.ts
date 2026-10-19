@@ -1,6 +1,6 @@
 import { authClient, SessionUser } from "@/api/authClient";
 import { cookies, headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { forbidden, redirect } from "next/navigation";
 import { cache } from "react";
 
 // - What it does: it memoizes the function's result for one server render, which means one incoming request. If the NavBar, a layout and a page all call getSessionUser(), the first call hits the API and the rest reuse its result.
@@ -26,6 +26,14 @@ export async function requireSessionUser(
   if (!user) {
     redirect("/login?redirectTo=" + encodeURIComponent(redirectTo || ""));
   }
+  return user;
+}
+
+// Call at the top of every /host/* page: layouts don't re-run on sibling
+// navigation, so the role check has to live in the page itself.
+export async function requireHost(redirectTo: string): Promise<SessionUser> {
+  const user = await requireSessionUser(redirectTo);
+  if (!user.roles.includes("host")) forbidden();
   return user;
 }
 
