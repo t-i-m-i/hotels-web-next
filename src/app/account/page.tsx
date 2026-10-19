@@ -1,8 +1,9 @@
 import { AccountActions } from "@/components/auth/AccountActions";
-import { requireSessionUser } from "@/lib/getSession";
+import { getActiveRole, requireSessionUser } from "@/lib/getSession";
 
 export default async function AccountPage() {
   const user = await requireSessionUser("/account");
+  const activeRole = await getActiveRole(user);
 
   return (
     <div>
@@ -10,7 +11,7 @@ export default async function AccountPage() {
       <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
 
-      <AccountActions user={user} />
+      <AccountActions user={user} activeRole={activeRole} />
     </div>
   );
 }

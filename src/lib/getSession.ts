@@ -1,5 +1,5 @@
 import { authClient, SessionUser } from "@/api/authClient";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
@@ -27,4 +27,9 @@ export async function requireSessionUser(
     redirect("/login?redirectTo=" + encodeURIComponent(redirectTo || ""));
   }
   return user;
+}
+
+export async function getActiveRole(user: SessionUser): Promise<string> {
+  const stored = (await cookies()).get("activeRole")?.value;
+  return stored && user.roles.includes(stored) ? stored : user.roles[0];
 }

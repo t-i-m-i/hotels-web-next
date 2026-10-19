@@ -38,7 +38,9 @@ import {
   type Hotel,
   type PaginatedHotels,
 } from "@/api/hotels";
+import { getSessionUser } from "@/lib/getSession";
 import type { Bounds } from "@/utils/geo";
+import { cookies } from "next/headers";
 
 export async function submitBooking(body: CreateBookingDto): Promise<Booking> {
   return createBooking(body);
@@ -53,4 +55,26 @@ export async function loadMoreHotels(
 
 export async function loadHotelsInBounds(bounds: Bounds): Promise<Hotel[]> {
   return getHotelsInBounds(bounds);
+}
+
+export async function setActiveRole(role: string) {
+  const user = await getSessionUser();
+  if (!user || !user.roles.includes(role)) {
+    console.warn(`Cannot switch to role "${role}": account doesn't hold it.`);
+    return;
+  }
+
+  (await cookies()).set({
+    name: "activeRole",
+    value: role,
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365, // without this it's a session cookie and dies when the browser closes
+    secure: process.env.NODE_ENV === "production",
+  });
+}
+
+export async function clearActiveRole() {
+  (await cookies()).delete("activeRole");
 }
