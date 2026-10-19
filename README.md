@@ -1,17 +1,16 @@
-# Hotels (web)
+# Hotels
 
-A web app for browsing hotels and viewing them on a map - the **Next.js**
-counterpart to the [Hotels](https://github.com/t-i-m-i/hotels) React Native
-app, built to demonstrate the same product as a server-rendered web app.
+A **Next.js server-rendered web app** for discovering and booking hotels,
+<br />backed by a [NestJS REST API](https://github.com/t-i-m-i/hotels-api).
 
 <img width="1200" height="690" alt="Image" src="https://github.com/user-attachments/assets/c4b45080-b162-439d-b704-9cdebf02eabf" />
 
-## Why this project
+## Features
 
-A web port of the Rect Native app's functionality, built with the same "typed
-contract across repos" idea: this app, the RN app, and the backend
-(`hotels-api`) all share the same OpenAPI-generated types, generated
-independently in each client repo from the same committed spec file.
+This app is a **web** sibling to the [Hotels - React Native with Expo](https://github.com/t-i-m-i/hotels) app,
+sharing the same OpenAPI-generated types with the backend.
+
+See the full feature list in the [Features section](https://github.com/t-i-m-i/hotels/blob/main/README.md#features).
 
 ## Tech stack
 
@@ -54,15 +53,15 @@ colliding with it.
 
 ### Scripts
 
-| Command                           | What it does                                                                                                                        |
-| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `bun dev`                         | Start the Next.js dev server on port 3001.                                                                                          |
-| `bun run build`                   | Production build.                                                                                                                   |
-| `bun start`                       | Run the production build on port 3001.                                                                                              |
-| `bun run generate:api-types`      | Regenerate `src/api/generated/schema.d.ts` from `../hotels-api/docs/openapi.json` — run after any route/DTO change in `hotels-api`. |
-| `bun run type-check`              | tsc --noEmit                                                                                                                        |
-| `bun run lint`                    | ESLint.                                                                                                                             |
-| `bun run format` / `format:check` | Prettier.                                                                                                                           |
+| Command                           | What it does                                                                                                                       |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `bun dev`                         | Start the Next.js dev server on port 3001.                                                                                         |
+| `bun run build`                   | Production build.                                                                                                                  |
+| `bun start`                       | Run the production build on port 3001.                                                                                             |
+| `bun run generate:api-types`      | Regenerate `src/api/generated/schema.d.ts` from `../hotels-api/docs/openapi.json`. Run after any route/DTO change in `hotels-api`. |
+| `bun run type-check`              | tsc --noEmit                                                                                                                       |
+| `bun run lint`                    | ESLint.                                                                                                                            |
+| `bun run format` / `format:check` | Prettier.                                                                                                                          |
 
 ## Testing
 
@@ -82,3 +81,7 @@ tagging the booking `X-Synthetic-Booking: true` (only when Playwright itself sta
 `docs/logs/005-playwright-booking-e2e.md` and `docs/logs/006-synthetic-booking-tag.md`, and
 `hotels-api`'s `docs/guides/testing-against-production-patterns.md` for the reasoning behind tagging
 synthetic data instead of matching on hotel name/dates.
+
+## About me
+
+Hi, I'm Tymoteusz. I'm a Fullstack Developer working across frontend, backend, and user experience. I build native mobile apps, backend APIs, and work with databases. I'm looking for an opportunity to keep growing as a Software Engineer - Fullstack Node.js React and/or React Native.
