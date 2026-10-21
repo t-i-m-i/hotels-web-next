@@ -91,7 +91,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["BookingsController_findAll"];
+        get?: never;
         put?: never;
         post: operations["BookingsController_create"];
         delete?: never;
@@ -283,6 +283,12 @@ export interface components {
             checkIn: string;
             /** @example 2026-09-10 */
             checkOut: string;
+            /** @example John */
+            guestFirstName: string;
+            /** @example Doe */
+            guestLastName: string;
+            /** @example john.doe@example.com */
+            guestEmail: string;
         };
         BookingDto: {
             /** @example 38dca5bd-0417-4971-baee-056e1aa3ce21 */
@@ -319,6 +325,7 @@ export interface components {
              * @enum {string}
              */
             status: "pending" | "confirmed" | "cancelled" | "completed" | "no_show";
+            allowedStatusChanges: ("pending" | "confirmed" | "cancelled" | "completed" | "no_show")[];
         };
         HostBookingDto: {
             id: string;
@@ -330,6 +337,7 @@ export interface components {
              * @enum {string}
              */
             status: "pending" | "confirmed" | "cancelled" | "completed" | "no_show";
+            allowedStatusChanges: ("pending" | "confirmed" | "cancelled" | "completed" | "no_show")[];
         };
         HostHotelBookingsDto: {
             hotelId: string;
@@ -343,6 +351,12 @@ export interface components {
             checkIn?: string;
             /** @example 2026-09-10 */
             checkOut?: string;
+            /** @example John */
+            guestFirstName?: string;
+            /** @example Doe */
+            guestLastName?: string;
+            /** @example john.doe@example.com */
+            guestEmail?: string;
         };
         UpdateBookingStatusDto: {
             /**
@@ -510,25 +524,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-        };
-    };
-    BookingsController_findAll: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BookingDetailsDto"][];
-                };
             };
         };
     };

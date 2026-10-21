@@ -3,7 +3,7 @@ import { Hotel } from "@/api/hotels";
 import { DatePicker } from "./DatePicker";
 import { DateRange } from "@daypicker/react";
 import { useState } from "react";
-import { Booking } from "@/api/bookings";
+import { CreateBookingDto, type BookingDto } from "@/api/bookings";
 import { submitBooking } from "@/app/actions";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ export function HotelForm({
   bookings,
 }: {
   hotel: Hotel;
-  bookings: Booking[];
+  bookings: BookingDto[];
 }) {
   const router = useRouter();
   const [range, setRange] = useState<DateRange | undefined>(undefined);
@@ -28,10 +28,14 @@ export function HotelForm({
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (range && range.from && range.to) {
-      const body = {
+      const body: CreateBookingDto = {
         hotelId: hotel.id,
         checkIn: format(range.from, "yyyy-MM-dd"),
         checkOut: format(range.to, "yyyy-MM-dd"),
+        // TODO booking form with these fields is still to be done
+        guestEmail: "test@test.com", // we need valid email on the backend
+        guestFirstName: "John",
+        guestLastName: "Doe",
       };
       const booking = await submitBooking(body);
       router.push(`/booking/${booking.id}`);

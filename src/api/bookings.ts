@@ -1,7 +1,7 @@
 import { apiClient } from "@/api/client";
 import type { components } from "@/api/generated/schema";
 
-export type Booking = components["schemas"]["BookingDto"];
+export type BookingDto = components["schemas"]["BookingDto"];
 export type CreateBookingDto = components["schemas"]["CreateBookingDto"];
 export type BookingDetailsDto = components["schemas"]["BookingDetailsDto"];
 export type HostHotelBookingsDto =
@@ -9,8 +9,11 @@ export type HostHotelBookingsDto =
 export type HostBookingDto = components["schemas"]["HostBookingDto"];
 export type UpdateBookingStatusDto =
   components["schemas"]["UpdateBookingStatusDto"];
+export type BookingStatus = UpdateBookingStatusDto["status"];
 
-export async function createBooking(body: CreateBookingDto): Promise<Booking> {
+export async function createBooking(
+  body: CreateBookingDto,
+): Promise<BookingDto> {
   const { data, error } = await apiClient.POST("/bookings", {
     body,
   });
@@ -32,7 +35,7 @@ export async function getCurrentByHotel(hotelId: string) {
   return data;
 }
 
-export async function getBooking(id: string): Promise<Booking> {
+export async function getBooking(id: string): Promise<BookingDto> {
   const { data, error } = await apiClient.GET("/bookings/{id}", {
     params: { path: { id } },
   });
@@ -61,5 +64,21 @@ export async function getByHost(hostId: string) {
   if (error || !data) {
     throw error ?? new Error(`Bookings for host ${hostId} not found`);
   }
+  return data;
+}
+
+export async function updateBookingStatus(
+  id: string,
+  body: UpdateBookingStatusDto,
+): Promise<BookingDto> {
+  const { data, error } = await apiClient.PATCH("/bookings/{id}/status", {
+    params: { path: { id } },
+    body,
+  });
+
+  if (error || !data) {
+    throw error ?? new Error(`Failed to update booking ${id}`);
+  }
+
   return data;
 }

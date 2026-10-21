@@ -29,7 +29,9 @@
 
 import {
   createBooking,
-  type Booking,
+  updateBookingStatus,
+  UpdateBookingStatusDto,
+  type BookingDto,
   type CreateBookingDto,
 } from "@/api/bookings";
 import {
@@ -40,10 +42,34 @@ import {
 } from "@/api/hotels";
 import { getSessionUser } from "@/lib/getSession";
 import type { Bounds } from "@/utils/geo";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-export async function submitBooking(body: CreateBookingDto): Promise<Booking> {
+export async function submitBooking(
+  body: CreateBookingDto,
+): Promise<BookingDto> {
   return createBooking(body);
+}
+
+export async function updateBookingStatusAction(
+  id: string,
+  body: UpdateBookingStatusDto,
+): Promise<{ error?: string }> {
+  try {
+    await updateBookingStatus(id, body);
+  } catch (e) {
+    // api functions `throw error` with the parsed Nest body, a plain object, not an Error
+    const message =
+      typeof e === "object" && e !== null && "message" in e
+        ? String(e.message)
+        : "Something went wrong";
+    return { error: message };
+  }
+
+  // this makes Next send the fresh page data back in the same response as the action result,
+  // so there is one round trip (no need to router.refresh() in the client component)
+  revalidatePath("/bookings");
+  return {};
 }
 
 export async function loadMoreHotels(

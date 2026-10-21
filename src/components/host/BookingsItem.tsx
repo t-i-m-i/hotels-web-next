@@ -1,4 +1,5 @@
 import { HostBookingDto } from "@/api/bookings";
+import { BookingStatusButtons } from "@/components/common/BookingStatusButtons";
 
 export function BookingsItem({ booking }: { booking: HostBookingDto }) {
   return (
@@ -10,6 +11,12 @@ export function BookingsItem({ booking }: { booking: HostBookingDto }) {
         {booking.checkIn} - {booking.checkOut}
       </p>
       <p>{booking.status}</p>
+
+      {/* client component with buttons so BookingsItem can stay a Server Component */}
+      <BookingStatusButtons
+        bookingId={booking.id}
+        allowedStatusChanges={booking.allowedStatusChanges}
+      />
     </div>
   );
 }
