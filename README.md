@@ -4,8 +4,10 @@ A **Next.js server-rendered web app** for discovering and booking hotels,
 <br />backed by a [NestJS REST API](https://github.com/t-i-m-i/hotels-api).
 
 <img width="1610" height="981" alt="Image" src="https://github.com/user-attachments/assets/9ee5f3d0-48ef-459e-9a03-6df04e361549" />
+
 <img width="1715" height="992" alt="Image" src="https://github.com/user-attachments/assets/98d9ce4e-ae92-4745-9646-a966c755fd6b" />
-<img width="1624" height="952" alt="Image" src="https://github.com/user-attachments/assets/44720e27-52ae-477c-a48a-253bb6703bed" />
+
+<img width="1247" height="861" alt="Image" src="https://github.com/user-attachments/assets/c753b584-1b72-498e-992c-e189189c13b5" />
 
 ## Features
 
