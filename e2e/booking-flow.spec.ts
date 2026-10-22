@@ -36,7 +36,9 @@ test.describe("books a hotel end to end", () => {
     await expect(hotelLink).toBeVisible();
     await hotelLink.click();
 
-    await expect(page.getByRole("button", { name: "Reserve" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Book", exact: true }),
+    ).toBeVisible();
 
     // Next month, days 10-13 — same range the Maestro flow books, far
     // enough out that it's very unlikely to collide with another booking
@@ -49,7 +51,7 @@ test.describe("books a hotel end to end", () => {
     await page.getByRole("button", { name: format(checkIn, "PPPP") }).click();
     await page.getByRole("button", { name: format(checkOut, "PPPP") }).click();
 
-    await page.getByRole("button", { name: "Reserve" }).click();
+    await page.getByRole("button", { name: "Book", exact: true }).click();
 
     await expect(page).toHaveURL(/\/booking\/([0-9a-f-]+)$/);
     createdBookingId = new URL(page.url()).pathname.split("/").pop();

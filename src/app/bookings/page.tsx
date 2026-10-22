@@ -6,9 +6,13 @@ export default async function BookingsPage() {
   const user = await requireSessionUser("/bookings");
   const activeRole = await getActiveRole(user);
 
-  return activeRole === "host" ? (
-    <HostBookings userId={user.id} />
-  ) : (
-    <GuestBookings userId={user.id} />
+  return (
+    <div className="mx-auto w-full max-w-5xl">
+      {activeRole === "host" ? (
+        <HostBookings userId={user.id} />
+      ) : (
+        <GuestBookings userId={user.id} />
+      )}
+    </div>
   );
 }

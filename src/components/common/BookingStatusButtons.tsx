@@ -7,9 +7,18 @@ import { useState, useTransition } from "react";
 type Status = BookingStatus;
 
 const ACTIONS = {
-  confirmed: { label: "Confirm booking", className: "bg-green-600" },
-  cancelled: { label: "Cancel booking", className: "bg-red-600" },
-  no_show: { label: "Set as no-show", className: "bg-gray-600" },
+  confirmed: {
+    label: "Confirm booking",
+    className: "bg-green-600 hover:bg-green-700",
+  },
+  cancelled: {
+    label: "Cancel booking",
+    className: "bg-red-600 hover:bg-red-700",
+  },
+  no_show: {
+    label: "Set as no-show",
+    className: "bg-neutral-600 hover:bg-neutral-700",
+  },
 } satisfies Partial<Record<Status, { label: string; className: string }>>;
 
 type ActionStatus = keyof typeof ACTIONS;
@@ -37,24 +46,31 @@ export function BookingStatusButtons({
     });
   };
 
+  const actions = allowedStatusChanges.filter(isAction);
+  if (actions.length === 0) return null;
+
   return (
-    <div>
-      <div className="flex gap-4">
-        {allowedStatusChanges.filter(isAction).map((status) => {
+    <div className="mt-3">
+      <div className="flex flex-wrap gap-2">
+        {actions.map((status) => {
           const { label, className } = ACTIONS[status];
           return (
             <button
               key={status}
               onClick={() => handleClick(status)}
               disabled={isPending}
-              className={`px-4 py-2 rounded text-white ${className}`}
+              className={`rounded-md px-3 py-1.5 text-sm font-medium text-white transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
             >
               {isPending && clicked === status ? "Updating…" : label}
             </button>
           );
         })}
       </div>
-      {error && <p role="alert">{error}</p>}
+      {error && (
+        <p role="alert" className="mt-2 text-sm text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

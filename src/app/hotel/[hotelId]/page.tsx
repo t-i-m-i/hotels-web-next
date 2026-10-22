@@ -36,7 +36,7 @@ export default async function HotelPage({
   return (
     <div className="flex flex-1 flex-col">
       <div className="relative h-[calc(100vh-3rem)] w-full">
-        <div className="absolute left-4 top-4 z-10 w-1/4 rounded-lg bg-background p-4">
+        <div className="absolute left-4 top-4 z-10 w-[22rem] max-w-[calc(100%-2rem)] rounded-lg border border-neutral-200 bg-background p-4 shadow-lg dark:border-neutral-800">
           <HotelForm hotel={hotel} bookings={bookings} />
         </div>
         <HotelMap

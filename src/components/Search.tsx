@@ -3,6 +3,8 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 
+import { inputClass } from "@/components/auth/styles";
+
 export default function Search({
   startTransitionAction,
 }: {
@@ -27,14 +29,14 @@ export default function Search({
   }
 
   return (
-    <div className="py-4">
+    <div>
       <input
         type="search"
         placeholder="Search"
         // defaultValue, not value — this keeps the input uncontrolled so your own typing isn't fought by re-renders when the URL updates. If you use value + router's async navigation, keystrokes can feel laggy or get lost.
         defaultValue={searchParams.get("search") ?? ""}
         onChange={(e) => handleChange(e.target.value)}
-        className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+        className={inputClass}
       />
     </div>
   );

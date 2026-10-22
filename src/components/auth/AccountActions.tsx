@@ -2,6 +2,7 @@
 
 import { authClient, SessionUser } from "@/api/authClient";
 import { clearActiveRole, setActiveRole } from "@/app/actions";
+import { buttonClass } from "@/components/auth/styles";
 import { useRouter } from "next/navigation";
 
 const ROLE_HOME: Record<string, string> = {
@@ -42,24 +43,32 @@ export function AccountActions({
   };
 
   return (
-    <div>
-      <div>
-        <p>
-          Viewing as:
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <p className="text-sm text-neutral-500">Viewing as</p>
+        <div className="flex flex-wrap gap-2">
           {user.roles.map((role) => (
             <button
               key={role}
               onClick={() => handleSwitchRole(role)}
-              className={role === activeRole ? "font-bold" : ""}
+              aria-pressed={role === activeRole}
+              className={`rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
+                role === activeRole
+                  ? "border-blue-600 bg-blue-600 text-white"
+                  : "border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900"
+              }`}
             >
               {ROLE_LABELS[role] ?? role}
             </button>
           ))}
-        </p>
+        </div>
       </div>
-      <div>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+      <button
+        onClick={handleLogout}
+        className={`${buttonClass} border border-neutral-300 hover:bg-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-900`}
+      >
+        Logout
+      </button>
     </div>
   );
 }

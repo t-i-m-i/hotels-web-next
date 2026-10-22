@@ -1,4 +1,5 @@
 import { BookingDetailsDto } from "@/api/bookings";
+import { isInactiveStatus, StatusBadge } from "@/components/common/StatusBadge";
 
 // checkOut is a bare "YYYY-MM-DD" calendar day (see hotels-api docs/logs/004),
 // so "today" is built the same way and compared lexically, never routed
@@ -27,14 +28,19 @@ export default function BookingListItem({
 }: {
   booking: BookingDetailsDto;
 }) {
-  const isPast = isPastBooking(booking.checkOut);
+  // a pending booking left past its dates stays "pending", so check the date too
+  const isDimmed =
+    isInactiveStatus(booking.status) || isPastBooking(booking.checkOut);
 
   return (
     <div
-      className={`rounded-lg border border-neutral-200 p-4 ${isPast ? "opacity-60" : ""}`}
+      className={`rounded-lg border border-neutral-200 p-4 dark:border-neutral-800 ${isDimmed ? "opacity-60" : ""}`}
     >
-      <p className="font-semibold">{booking.hotel.name}</p>
-      <p className="text-sm text-neutral-500">
+      <div className="flex items-start justify-between gap-2">
+        <p className="font-semibold">{booking.hotel.name}</p>
+        <StatusBadge status={booking.status} />
+      </div>
+      <p className="mt-1 text-sm text-neutral-500">
         {booking.checkIn} - {booking.checkOut}
       </p>
     </div>

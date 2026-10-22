@@ -15,8 +15,8 @@ export async function GuestBookings({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <h1 className="text-xl font-semibold">Bookings</h1>
+    <div className="flex flex-col gap-6 p-4">
+      <h1 className="text-2xl font-bold">Bookings</h1>
       {bookings.length === 0 ? (
         <p className="text-neutral-600">No bookings found.</p>
       ) : (

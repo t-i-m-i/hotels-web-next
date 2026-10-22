@@ -47,8 +47,17 @@ import { cookies } from "next/headers";
 
 export async function submitBooking(
   body: CreateBookingDto,
-): Promise<BookingDto> {
-  return createBooking(body);
+): Promise<{ booking: BookingDto } | { error: string }> {
+  try {
+    const booking = await createBooking(body);
+    return { booking: booking };
+  } catch (e) {
+    const message =
+      typeof e === "object" && e !== null && "message" in e
+        ? String(e.message)
+        : "Something went wrong";
+    return { error: message };
+  }
 }
 
 export async function updateBookingStatusAction(
