@@ -22,12 +22,15 @@ export default async function ExplorePage({ searchParams }: PageProps<"/">) {
         </Link>
       </div>
 
-      {/* Pull the list into its own small client wrapper. This is the standard shape for "Server Component data, Client Component pending-state UI": lift the transition to the nearest client component that's a common ancestor of the trigger (input) and the thing you want to visually affect (list). */}
+      {/* HotelSearchSection is a client wrapper that holds the search input
+          and the list, so it can dim the list (isPending) while a new search
+          is loading. The list stays a Server Component child, passed in as
+          `children`, so its data is still fetched on the server. */}
       <HotelSearchSection>
-        {/* key: when the search term changes the URL, the Server Component
-            re-renders with a fresh page-1 `initialData`. Keying on the term
-            forces HotelList to remount so its accumulated pages reset instead
-            of appending onto stale results. */}
+        {/* key: HotelList copies `initialData` into state only on first render.
+            A new search brings new page-1 data, but without a new key React
+            would keep the old state and ignore it. Changing the key remounts
+            the list with fresh state. */}
         <HotelList
           key={normalizedSearch ?? ""}
           initialData={initialData}

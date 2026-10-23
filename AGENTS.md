@@ -57,6 +57,8 @@ refetching that URL-driven navigation can't express.
   entry (what was done, why, anything non-obvious/gotchas) rather than
   editing an old log entry.
 
-## Commit messages
+## Git Conventions
 
-One-line commit messages — no multi-paragraph bodies.
+- Write short, concise commit messages (one line, under 50 characters when possible)
+- Example: `"Add dark mode toggle"`, `"Fix user profile validation"`
+- Never include metadata (no Co-Authored-By, issue references, timestamps)
