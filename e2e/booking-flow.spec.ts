@@ -31,6 +31,10 @@ test.describe("books a hotel end to end", () => {
     await page.goto("/");
 
     await page.getByPlaceholder("Search").fill("Barcelona");
+    // The search is debounced and then updates the URL. Clicking a result
+    // before that lands races with it: the pending URL update can override
+    // the click's navigation (or yank the page out from under later steps).
+    await expect(page).toHaveURL(/search=Barcelona/);
 
     const hotelLink = page.locator('a[href^="/hotel/"]').first();
     await expect(hotelLink).toBeVisible();
@@ -50,6 +54,10 @@ test.describe("books a hotel end to end", () => {
     await page.getByRole("button", { name: "Go to the Next Month" }).click();
     await page.getByRole("button", { name: format(checkIn, "PPPP") }).click();
     await page.getByRole("button", { name: format(checkOut, "PPPP") }).click();
+
+    await page.getByLabel("Guest Email").fill("test@test.com");
+    await page.getByLabel("Guest First Name").fill("John");
+    await page.getByLabel("Guest Last Name").fill("Doe");
 
     await page.getByRole("button", { name: "Book", exact: true }).click();
 

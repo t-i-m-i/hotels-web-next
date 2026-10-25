@@ -77,6 +77,11 @@ colliding with it.
 `hotels-api` already running separately on `:3000` with the demo seed data - same requirement as running
 the app manually.
 
+The booking endpoint needs a session, so a Playwright `setup` project (`e2e/auth.setup.ts`) first logs in
+through `/login` as a dedicated e2e account and saves the cookies to `e2e/.auth/` (gitignored); the booking
+test loads them. Set `E2E_USER_EMAIL` / `E2E_USER_PASSWORD` in `.env.local` (see `.env.example`). The account
+is seeded once against `hotels-api`; the curl is in the RN app's `.maestro/booking-flow.yaml`.
+
 The flow creates a real booking against the shared PostgreSQL database. It's cleaned up two ways: precisely, by
 `afterEach` deleting the exact id captured from the post-booking redirect URL; and as a fallback, by
 tagging the booking `X-Synthetic-Booking: true` (only when Playwright itself started the server -

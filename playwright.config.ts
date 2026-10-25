@@ -1,4 +1,9 @@
+import { loadEnvConfig } from "@next/env";
 import { defineConfig, devices } from "@playwright/test";
+
+// Playwright doesn't read .env.local on its own; load it the way Next does so
+// E2E_USER_EMAIL / E2E_USER_PASSWORD are available to the tests.
+loadEnvConfig(process.cwd());
 
 // Happy-path E2E for the web app, mirroring the RN app's Maestro flow at
 // ../hotels/.maestro/booking-flow.yaml — same seed data, same "Barcelona"
@@ -17,10 +22,14 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
+    { name: "setup", testMatch: /auth\.setup\.ts/ },
     {
       name: "chromium",
+      dependencies: ["setup"],
+      testIgnore: /auth\.setup\.ts/,
       use: {
         ...devices["Desktop Chrome"],
+        storageState: "e2e/.auth/user.json",
         // The hotel detail page renders a maplibre-gl (WebGL) map; headless
         // Chromium has no GPU by default, which throws client-side and can
         // leave the page on a Next.js dev error overlay. Force software
