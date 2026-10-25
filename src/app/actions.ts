@@ -32,7 +32,6 @@ import {
   updateBookingStatus,
   UpdateBookingStatusDto,
   type BookingDto,
-  type CreateBookingDto,
 } from "@/api/bookings";
 import {
   getHotels,
@@ -41,15 +40,25 @@ import {
   type PaginatedHotels,
 } from "@/api/hotels";
 import { getSessionUser } from "@/lib/getSession";
+import { createBookingSchema } from "@/schemas/booking";
 import type { Bounds } from "@/utils/geo";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export async function submitBooking(
-  body: CreateBookingDto,
+  body: unknown,
 ): Promise<{ booking: BookingDto } | { error: string }> {
+  // server-side input validation
+  const validatedData = createBookingSchema.safeParse(body);
+  if (!validatedData.success) {
+    // Note:
+    // Just fallback message.
+    // If needed per field server errors use: z.flattenError(validatedData.error)
+    return { error: "Invalid booking data" };
+  }
+  // make api call to create booking
   try {
-    const booking = await createBooking(body);
+    const booking = await createBooking(validatedData.data);
     return { booking: booking };
   } catch (e) {
     const message =
