@@ -71,6 +71,7 @@ colliding with it.
 
 | Command            | What it does                                                                                                                    |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `bun run test`     | Jest + React Testing Library unit tests (`src/**/__tests__/`), run in jsdom; `test:watch` re-runs on change.                    |
 | `bun run test:e2e` | Playwright happy-path e2e (`e2e/booking-flow.spec.ts`): search, open a hotel, book a date range, land on the confirmation page. |
 
 `test:e2e` starts this app's own dev server on `:3001` (`playwright.config.ts`'s `webServer`) but requires
