@@ -11,6 +11,19 @@ export const registerSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().nonempty("Current password is required"),
+    newPassword: z
+      .string()
+      .min(8, "New password must be at least 8 characters"),
+    confirmPassword: z.string().nonempty("Please confirm the new password"),
+  })
+  .refine((value) => value.newPassword === value.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
 // Where to send the user after login. Comes from the URL (?redirectTo=...), so
 // it's attacker-controlled: only same-origin paths are accepted, anything else
 // (missing, an absolute URL, `//evil.com`, `/\\evil.com`, `javascript:`) falls
@@ -36,3 +49,4 @@ export const redirectToSchema = z.preprocess(
 
 export type LoginForm = z.infer<typeof loginSchema>;
 export type RegisterForm = z.infer<typeof registerSchema>;
+export type ChangePasswordForm = z.infer<typeof changePasswordSchema>;

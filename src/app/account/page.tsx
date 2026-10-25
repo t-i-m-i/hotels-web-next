@@ -1,4 +1,5 @@
 import { AccountActions } from "@/components/auth/AccountActions";
+import { ChangePasswordLink } from "@/components/auth/ChangePasswordLink";
 import { getActiveRole, requireSessionUser } from "@/lib/getSession";
 
 export default async function AccountPage() {
@@ -18,6 +19,7 @@ export default async function AccountPage() {
           <dt className="text-sm text-neutral-500">Email</dt>
           <dd className="font-semibold">{user.email}</dd>
         </div>
+        <ChangePasswordLink />
       </dl>
 
       <AccountActions user={user} activeRole={activeRole} />
